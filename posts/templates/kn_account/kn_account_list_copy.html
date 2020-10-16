@@ -1,0 +1,31 @@
+{% extends 'post_list.html' %}
+{% block title %}Аккаунты KerchNET{% endblock %}
+{% block content %}
+<a class="btn btn-primary" href="{% url 'posts:kn_account_add' %}" role="button">Добавить аккаунт KerchNET</a>
+
+{% if kerchnet_accounts %}
+<table class="table table-striped">
+    <tbody>
+        <thead>
+            <tr>
+                {% load post_extras %}
+                <th scope="col">{% get_field_verbose_name account 'id' %}</th>
+                <th scope="col">{% get_field_verbose_name account 'kn_datetime_created' %}</th>
+                <th scope="col">{% get_field_verbose_name account 'kn_email' %}</th>
+                <th scope="col">{% get_field_verbose_name account 'kn_password' %}</th>
+            </tr>
+            {% for account in kerchnet_accounts %}
+            <tr>
+                <td>{{ account.pk }}</td>
+                <td>{{ account.kn_datetime_created|date:'d.m.Y H:i:s' }}</td>
+                <td>{{ account.kn_email }}</td>
+                <td>{{ account.kn_password }}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-warning" role="alert">Вы ещё не добавили ни одного аккаунта керчьнет</div>
+{% endif %}
+
+{% endblock %}

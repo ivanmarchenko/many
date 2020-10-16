@@ -1,0 +1,14 @@
+{% extends 'post_list.html' %}
+{% block title %}Удаление объявления #{{ post.title|truncatechars:30 }}{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="alert alert-danger" role="alert">
+        Вы уверены, что хотите удалить объявление <br>"#{{ post }}"?
+    </div>
+    <input type="submit" class="btn btn-danger" value="Да, я уверен">
+    <a href="#" onclick="window.history.back(); return false;" class="button cancel-link">
+        Нет, отменить и вернуться к выбору
+    </a>
+</form>
+{% endblock %}

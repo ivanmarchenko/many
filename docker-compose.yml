@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    web:
+        build: .
+        command: python manage.py runserver 0.0.0.0:8000
+        # https://medium.com/faun/set-current-host-user-for-docker-container-4e521cef9ffc
+        # export UID=$(id -u)
+        # export GID=$(id -g)
+        # user: $UID:$GID
+        volumes:
+            - .:/manypost
+        ports: 
+            - 8000:8000
+        depends_on: 
+            - db
+    db:
+        image: postgres:11
+        environment: 
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        # volumes:
+            # - postgres_data:/var/lib/postgres/data
+            # - ./postgres-data:/var/lib/postgresql/data
+
+volumes: 
+    pgdata:

@@ -1,0 +1,19 @@
+{% extends 'post_list.html' %}
+{% block title %}Добавить аккаунт KerchNET{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        {{ field.errors }}
+        <label for="{{ field.auto_id }}" {% if field.field.required %} class="required"
+            {% endif %}>{{ field.label }}:</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <a href="#" onclick="window.history.back(); return false;" class="p-2 float-right button cancel-link">
+        Отмена
+    </a>
+    <input type="submit" class="float-right btn btn-success" value="Сохранить и закрыть">
+</form>
+{% endblock %}

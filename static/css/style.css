@@ -1,0 +1,16 @@
+body {
+    font-size: 0.9rem;
+}
+.table thead th {
+    vertical-align: middle;
+}
+/* .form_post label {
+    font-weight: 800;
+    margin-right: 30px;
+} */
+label.required {
+    font-weight: bold;
+}
+.form-control {
+    width: auto;
+}

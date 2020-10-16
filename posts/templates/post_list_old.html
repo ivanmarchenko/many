@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}{{ user }}{% endblock %}</title>
+</head>
+
+<body>
+    <div class="container">
+
+        {% block header %}
+        {% include 'include/header.html' %}
+        {% endblock %}
+
+        <div class="row">
+            {% block sidebar %}
+            <div class="col-2">
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="{% url 'posts:posts' %}">Список объявлений</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'posts:kn_account_list' %}">Аккаунты KerchNET</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'posts:posts_test' %}">Объявления ТЕСТ</a>
+                    </li>
+                </ul>
+            </div>
+            {% endblock %}
+            <div class="col-10">
+                {% block content %}
+                <a class="btn btn-primary" href="{% url 'posts:post_add' %}" role="button">Добавить объявление</a>
+                {% if posts %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            {% load post_extras %}
+                            <th scope="col">{% get_field_verbose_name post 'id' %}</th>
+                            <th scope="col">{% get_field_verbose_name post 'title' %}</th>
+                            <th scope="col">{% get_field_verbose_name post 'text' %}</th>
+                            <th width="110px" scope="col">{% get_field_verbose_name post 'datetime_changed' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <td><a href="{{ post.get_absolute_url }}"><b>{{ post.pk }}</b></a></td>
+                            <td><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></td>
+                            <td>{{ post.text|striptags|truncatechars:150 }}</td>
+                            <td>{{ post.datetime_changed|date:'d.m.Y H:i:s' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-warning" role="alert">Добавьте ваше первое объявление</div>
+                {% endif %}
+                {% endblock %}
+            </div>
+            <div style="padding-bottom: 20px"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+</body>
+
+</html>

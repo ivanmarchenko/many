@@ -1,0 +1,21 @@
+body {
+    font-size: 0.9rem;
+}
+.table thead th {
+    vertical-align: middle;
+}
+/* .form_post label {
+    font-weight: 800;
+    margin-right: 30px;
+} */
+label.required {
+    font-weight: bold;
+}
+.form-control {
+    width: auto;
+    font-size: 0.9rem;
+}
+#post_list button.btn.btn-light{
+    font-size: 0.9rem;
+    border: 1px solid #e2e2e2;
+}
