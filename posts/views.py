@@ -1,9 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import (
+    render, 
+    redirect,
+    reverse
+    )
 from django.urls import reverse_lazy
-from .forms import LoginForm, PostUpdateForm, PostCreateForm, KnAccountCreateForm
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseForbidden
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from .forms import *
+from django.contrib.auth import (
+    authenticate, 
+    login
+    )
+from django.http import (
+    HttpResponse, 
+    HttpResponseNotFound, 
+    Http404, 
+    HttpResponseForbidden
+    )
+from django.views.generic import (
+    ListView, 
+    DetailView, 
+    UpdateView, 
+    CreateView, 
+    DeleteView, 
+    View
+    )
 from .models import Post, Kerchnet_account
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -118,19 +137,42 @@ class PostDelete(UserCheckMixin, DeleteView):
     # пока представление не завершит удаление записи из базы данных.
     success_url = reverse_lazy('posts:posts')
 
-
-class test(DeleteView):
-    pass
-
-def TestDelete(request):
+class PostsDelete(View):
+    # https://stackoverflow.com/questions/37663145/django-how-to-bulk-delete
+    # https://www.youtube.com/watch?v=3VBHWLFza4s
+    # https://www.youtube.com/watch?v=OIfKHssR1oc
+    # https://metanit.com/python/django/5.3.php
     """
     Групповое удаление
     """
-    # model = Post
-    # template_name = 'test.html'
-    # success_url = reverse_lazy('posts:posts')
+    model = None
+    pks = []
+    # pks = self.request.GET.getlist('selected_action')
+   
+    def get(self, request):
+        pks = request.GET.getlist('selected_action')
+        if pks:
+            print(pks)
+            self.model.objects.filter(pk__in=pks).delete()
+            return render(request, 'posts_delete_confirmation.html', context={'pks': pks})
+        else:
+            return HttpResponseForbidden()
+
+    # def post(self, request, *args, **kwargs):
+    # #     # delete_ids = request.POST['delete_ids'].split(',')  # should validate
+    # #     # self.model.objects.filter(pk__in=delete_ids).delete()
+    # #     # print(obj.pks)
+    #     print('pks', self.pks)
+    #     return reverse('posts:posts')
+
+
+def TestDelete(request, pks):
+    """
+    Групповое удаление
+    """
+
     pks = request.POST.getlist('selected_action')
-    print(pks)
+    print('selected_action', pks)
     return render(request, 'test.html', context={'pks': pks})
 
 

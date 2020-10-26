@@ -22,5 +22,6 @@ urlpatterns = [
     path('kn_account/<int:pk>/delete/', views.KnAccountDelete.as_view(), name='kn_account_delete'),
     # страница списка Post с фильтрацией
     # path('posts_df/', views.PostTestList.as_view(), name='posts_test'),
-    path('delete/', views.TestDelete, name='delete'),
+    path('delete/', views.PostsDelete.as_view(), name='posts_delete_confirmation'),
+
 ]
