@@ -3,6 +3,8 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from .models import Post, Kerchnet_account
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -23,6 +25,13 @@ class KnAccountCreateForm(forms.ModelForm):
         super(KnAccountCreateForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+    
+    # валидация на уникальность
+    def clean_kn_email(self):
+        kn_email = self.cleaned_data['kn_email']
+        if Kerchnet_account.objects.filter(kn_email=kn_email).exists():
+            raise ValidationError("E-mail уже существует")
+        return kn_email
 
 # форма обновления объявления
 class PostUpdateForm(forms.ModelForm):
