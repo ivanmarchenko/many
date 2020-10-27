@@ -38,22 +38,29 @@
             <div class="col-10">
                 {% block content %}
                 <a class="btn btn-primary" href="{% url 'posts:post_add' %}" role="button">Добавить объявление</a>
+                
+                {% if messages %}
+                    {% include 'include/messages.html' %}  
+                {% endif %}
+
                 {% if object_list %}
-                    {% load render_table from django_tables2 %}
-                    <form action="{% url 'posts:posts_delete_confirmation' %}" method="GET">
-                        {% csrf_token %}
-                        <br>
-                        <div class="actions form-group">
-                            <span>Действие:</span>
-                            <button type="submit" id="delete_checked" class="btn btn-light" disabled>Удалить выбранные</button>
-                            <div class="d-inline action-counter">Выбрано <span id="numb_of">0</span> из <span id="numb_all">...</span></div>
-                            <!-- <button type="button" id="delete_all" class="btn btn-light" style="visibility: hidden" disabled >Выбрать все {{ table|table_model_verbose_name_plural }} ({{ table.rows|length }})</button> -->
-                        </div>
-                        {% render_table table %}
-                    </form>
-                  
+                {% load render_table from django_tables2 %}
+                <form action="{% url 'posts:posts_delete_confirmation' %}" method="POST">
+                    {% csrf_token %}
+                    <br>
+                    <div class="actions form-group">
+                        <span>Действие:</span>
+                        <button type="submit" id="delete_checked" class="btn btn-light" disabled>Удалить
+                            выбранные</button>
+                        <div class="d-inline action-counter">Выбрано <span id="numb_of">0</span> из <span
+                                id="numb_all">...</span></div>
+                        <!-- <button type="button" id="delete_all" class="btn btn-light" style="visibility: hidden" disabled >Выбрать все {{ table|table_model_verbose_name_plural }} ({{ table.rows|length }})</button> -->
+                    </div>
+                    {% render_table table %}
+                </form>
+
                 {% else %}
-                    <div class="alert alert-warning" role="alert">Добавьте ваше первое объявление</div>
+                <div class="alert alert-warning" role="alert">Добавьте ваше первое объявление</div>
                 {% endif %}
                 {% endblock %}
             </div>

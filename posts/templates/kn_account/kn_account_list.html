@@ -1,13 +1,17 @@
 {% extends 'post_list.html' %}
-{% block title %}Аккаунты KerchNET{% endblock %}
+{% block title %}Аккаунты KerchNET{% endblock title %}
 {% block content %}
 <a class="btn btn-primary" href="{% url 'posts:kn_account_add' %}" role="button">Добавить аккаунт KerchNET</a>
 
+{% if messages %}
+    {% include 'include/messages.html' %}
+{% endif %}
+
 {% if object_list %}
-{% load render_table from django_tables2 %}
-{% render_table table %}
+    {% load render_table from django_tables2 %}
+    {% render_table table %}
 {% else %}
 <div class="alert alert-warning" role="alert">Вы ещё не добавили ни одного аккаунта керчьнет</div>
 {% endif %}
 
-{% endblock %}
+{% endblock content %}

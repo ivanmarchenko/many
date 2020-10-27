@@ -13,7 +13,8 @@ from django.http import (
     HttpResponse, 
     HttpResponseNotFound, 
     Http404, 
-    HttpResponseForbidden
+    HttpResponseForbidden,
+    HttpResponseRedirect
     )
 from django.views.generic import (
     ListView, 
@@ -26,6 +27,7 @@ from django.views.generic import (
 from .models import Post, Kerchnet_account
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
 class UserCheckMixin:
@@ -103,6 +105,13 @@ class KnAccountDelete(UserCheckMixin, DeleteView):
     model = Kerchnet_account
     template_name = 'kn_account/kn_account_delete.html'
     success_url = reverse_lazy('posts:kn_account_list')
+    success_message = f"{model._meta.verbose_name} был успешно удалён"
+
+    # переопределили для вывода messages
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(KnAccountDelete, self).delete(request, *args, **kwargs)
+
 
 class PostCreate(LoginRequiredMixin, CreateView):
     """
@@ -136,8 +145,8 @@ class PostDelete(UserCheckMixin, DeleteView):
     # таким образом пользователь не будет перенаправлен до тех пор, 
     # пока представление не завершит удаление записи из базы данных.
     success_url = reverse_lazy('posts:posts')
-
-class PostsDelete(View):
+    
+class PostsDelete(LoginRequiredMixin, View):
     # https://stackoverflow.com/questions/37663145/django-how-to-bulk-delete
     # https://www.youtube.com/watch?v=3VBHWLFza4s
     # https://www.youtube.com/watch?v=OIfKHssR1oc
@@ -145,35 +154,34 @@ class PostsDelete(View):
     """
     Групповое удаление
     """
-    model = None
-    pks = []
-    # pks = self.request.GET.getlist('selected_action')
+    model = Post
    
-    def get(self, request):
-        pks = request.GET.getlist('selected_action')
+    def post(self, request):
+        pks = request.POST.getlist('selected_action')
         if pks:
-            print(pks)
-            self.model.objects.filter(pk__in=pks).delete()
             return render(request, 'posts_delete_confirmation.html', context={'pks': pks})
         else:
             return HttpResponseForbidden()
 
-    # def post(self, request, *args, **kwargs):
-    # #     # delete_ids = request.POST['delete_ids'].split(',')  # should validate
-    # #     # self.model.objects.filter(pk__in=delete_ids).delete()
-    # #     # print(obj.pks)
-    #     print('pks', self.pks)
-    #     return reverse('posts:posts')
+    def get(self, request):
+        pks=request.GET.get('pks').split(',')
+        self.model.objects.filter(pk__in=pks)#.delete()
+        messages.add_message(request, messages.SUCCESS, 'Успешно удалено {} {}'.format(len(pks), self.model._meta.verbose_name_plural))
+        # return redirect('/')
+        return HttpResponseRedirect(reverse_lazy('posts:posts'))
 
 
-def TestDelete(request, pks):
-    """
-    Групповое удаление
-    """
+# def TestDelete(request, pks):
+#     """
+#     Групповое удаление
+#     """
 
-    pks = request.POST.getlist('selected_action')
-    print('selected_action', pks)
-    return render(request, 'test.html', context={'pks': pks})
+#     if (request.GET.get('pks')):
+#         pks = request.GET.get('pks')
+#         print('pks', pks)
+#         return HttpResponse(pks)
+#         Note.objects.filter(id = request.GET.get('DeleteButton')).delete()
+#         return redirect('/notes/')
 
 
 

@@ -29,3 +29,7 @@ def table_record_per_page(view):
     Получение количество записей на странице
     """
     return view.paginate_by
+
+@register.simple_tag
+def get_bootstrap_alert_msg_css_name(tags):
+  return 'danger' if tags == 'error' else tags

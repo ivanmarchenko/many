@@ -1,14 +1,17 @@
 {% extends 'post_list.html' %}
 {% block title %}Удаление объявления #{{ post.title|truncatechars:30 }}{% endblock %}
 {% block content %}
-<form action="." method="POST">
+<form action="." method="GET">
     {% csrf_token %}
     <div class="alert alert-danger" role="alert">
-        Вы уверены, что хотите удалить объявление <br>"#{{ pks }}"??????
-        {% for pk in pks %}
-            <p>{{ pk }}</p>
-        {% endfor %}
+        Вы уверены, что хотите удалить объявления:
+        <p>
+            {% for pk in pks %}
+                {{ pk }}{% if not forloop.parentloop.last and not forloop.last %},{% endif %}
+            {% endfor %}
+        ?</p>
     </div>
+    <input name="pks" class="d-none" value="{% for pk in pks %}{{ pk }}{% if not forloop.parentloop.last and not forloop.last %},{% endif %}{% endfor %}">
     <input type="submit" class="btn btn-danger" value="Да, я уверен">
     <a href="#" onclick="window.history.back(); return false;" class="button cancel-link">
         Нет, отменить и вернуться к выбору

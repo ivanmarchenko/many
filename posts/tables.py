@@ -47,8 +47,7 @@ class PostTable(tables.Table):
     id = tables.RelatedLinkColumn(attrs={'a': {'class': 'font-weight-bold'}})
     title = tables.LinkColumn('posts:post_detail', args=[A('pk')])
     datetime_changed = tables.DateTimeColumn(format='d.m.Y H:i:s')
-    counter = tables.TemplateColumn("{{ row_counter }}")
-    
+        
     class Meta:
         model = Post
         template_name = 'django_tables2/bootstrap4.html'
@@ -70,7 +69,12 @@ class PostTable(tables.Table):
 
 # определение таблицы списка для Kerchnet_account
 class KnAccountTable(tables.Table):
+    template_column = '<a class="btn btn-danger" href="{{  record.pk }}/delete/" role="button">Удалить</a>'
+    delete = tables.TemplateColumn(template_column, orderable=False, verbose_name=u'')
+
     class Meta:
         model = Kerchnet_account
         template_name = 'django_tables2/bootstrap4.html'
-        fields = ['id', 'kn_datetime_created', 'kn_email', 'kn_login', 'kn_password']
+        fields = ['id', 'kn_datetime_created', 'kn_email', 'kn_login', 'kn_password', 'delete']
+
+    

@@ -23,5 +23,4 @@ urlpatterns = [
     # страница списка Post с фильтрацией
     # path('posts_df/', views.PostTestList.as_view(), name='posts_test'),
     path('delete/', views.PostsDelete.as_view(), name='posts_delete_confirmation'),
-
 ]
