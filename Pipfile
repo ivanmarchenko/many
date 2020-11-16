@@ -10,6 +10,7 @@ django = "*"
 django-ckeditor = "*"
 django-tables2 = "*"
 psycopg2-binary = "*"
+django-q = "*"
 
 [requires]
 python_version = "3.8"

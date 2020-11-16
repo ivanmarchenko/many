@@ -11,7 +11,7 @@ FROM python:3.8-slim
 
 # environment variables
 ENV PYTHONDONTWRITEBYCODE 1
-ENV PYTHONDONTWRITEBYCODE 1
+ENV PYTHONUNBUFFERED 1
 
 # work directory
 WORKDIR /manypost

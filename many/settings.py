@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'posts',
+
+    # other apps
     'ckeditor',
     'ckeditor_uploader',
     # 'django_filters',
     'django_tables2',
-
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -178,3 +180,14 @@ LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = '/posts/'
 
+# djang-q settings
+
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 4,
+    'timeout': 90,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
