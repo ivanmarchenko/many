@@ -63,11 +63,15 @@ class Kerchnet_account(models.Model):
     # для проверки авторизации на сайте керчьнет
     def save(self, *args, **kwargs):
         schedule = Schedule.objects.create(
-            name=self.__str__(),
+            name='check_kn_login',
             func='posts.funcs.check_kn_login',
-            args=f'{self.kn_email}, {self.kn_password}',
+            # args="'{}, {}'".format(self.kn_email, self.kn_password),
+            # kwargs=f'email={self.kn_email}, password={self.kn_password}',
+            args=f"'{self.kn_email}', '{self.kn_password}'",
+            # исполнится однажды и удалиться планировщик,
+            # если repeats=-1
             schedule_type='O',
-            repeats=0,
+            repeats=-1,
         )
         self.schedule_id = schedule.pk
         super().save(*args, **kwargs)
