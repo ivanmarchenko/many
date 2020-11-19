@@ -44,8 +44,10 @@ RUN apt -y update
 # install Google Chrome
 RUN apt install -y google-chrome-stable
 
-# download latest Chrome Webdriver
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+# download latest Chrome Webdriver 
+# blocked for CRIMEA
+# RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+RUN wget -O /tmp/chromedriver.zip http://manypost.ru/files/chromedriver_linux64.zip
 
 # Unzip the Chrome Driver into /usr/local/bin directory
 RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/

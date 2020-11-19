@@ -12,6 +12,9 @@ django-tables2 = "*"
 psycopg2-binary = "*"
 django-q = "*"
 selenium = "*"
+ipython = "*"
+beautifulsoup4 = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
